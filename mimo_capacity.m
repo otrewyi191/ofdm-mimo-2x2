@@ -1,4 +1,4 @@
-%MIMO信道容量的Matlab仿真程序
+%MIMO淇￠亾瀹归噺鐨凪atlab浠跨湡绋嬪簭
 
 %% Simulation of Capacity of MIMO channel
 % Author: alpswy

@@ -1,15 +1,15 @@
 function pilot_added = pilot_insert(st_coded,Idx_pilot,PilotValue)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ¼ÓÈëµ¼Æµ.
+% åŠ å…¥å¯¼é¢‘.
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-N_sym=size(st_coded,2);%OFDM·ûºÅÊı
-N_Tx_ant=size(st_coded,3);%·¢ËÍÌìÏßÊı
+N_sym=size(st_coded,2);%OFDMç¬¦å·æ•°
+N_Tx_ant=size(st_coded,3);%å‘é€å¤©çº¿æ•°
 for n=1:N_Tx_ant
 for m=1:N_sym
- st_coded(Idx_pilot,m,n) = PilotValue;%ÔÚÆµÓò²åÈëµ¼Æµ
+ st_coded(Idx_pilot,m,n) = PilotValue;%åœ¨é¢‘åŸŸæ’å…¥å¯¼é¢‘
 end
-end                 %Ã¿¸±ÌìÏßÉÏµÄOFDM·ûºÅ¾ù²åÈëµ¼Æµ
+end                 %æ¯å‰¯å¤©çº¿ä¸Šçš„OFDMç¬¦å·å‡æ’å…¥å¯¼é¢‘
  
  pilot_added = st_coded;

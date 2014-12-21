@@ -1,41 +1,41 @@
 
 function sym = modu_sym(bit_to_mod)
 
-% µÃµ½µ÷ÖÆ·½Ê½
+% å¾—åˆ°è°ƒåˆ¶æ–¹å¼
 mod_type = size(bit_to_mod,1);
 
 switch mod_type
     
-    % BPSKµ÷ÖÆ
+    % BPSKè°ƒåˆ¶
     case    1 
-        % ±ÈÌØµÄÓ³Éä¹ØÏµ: 0: -1, 1: 1
+        % æ¯”ç‰¹çš„æ˜ å°„å…³ç³»: 0: -1, 1: 1
         mapping_matrix = [ -1  1 ];
-        %¡¡°ÑÊäÈë±ÈÌØÓ³ÉäÎª·ûºÅ
+        %ã€€æŠŠè¾“å…¥æ¯”ç‰¹æ˜ å°„ä¸ºç¬¦å·
         sym = mapping_matrix(bit_to_mod + 1);
   
-    % QPSKµ÷ÖÆ
+    % QPSKè°ƒåˆ¶
     case    2
-        %¡¡±ÈÌØµÄÓ³Éä¹ØÏµ,00:-3/4*pi,01:3/4*pi,10: -1/4*pi,11: 1/4*pi
+        %ã€€æ¯”ç‰¹çš„æ˜ å°„å…³ç³»,00:-3/4*pi,01:3/4*pi,10: -1/4*pi,11: 1/4*pi
         mapping_matrix = exp(j*[-3/4*pi 3/4*pi -1/4*pi 1/4*pi]);
         index = [2 1]*bit_to_mod;
-        %¡¡°ÑÊäÈë±ÈÌØÓ³ÉäÎª·ûºÅ
+        %ã€€æŠŠè¾“å…¥æ¯”ç‰¹æ˜ å°„ä¸ºç¬¦å·
         sym = mapping_matrix(index + 1);
 
-    % 8PSKµ÷ÖÆ    
+    % 8PSKè°ƒåˆ¶    
     case    3
-        % Ó³Éä¹ØÏµ²Î¼ûËµÃ÷ÎÄµµ
+        % æ˜ å°„å…³ç³»å‚è§è¯´æ˜æ–‡æ¡£
         mapping_matrix = exp(j*[0  1/4*pi 3/4*pi 1/2*pi  -1/4*pi -1/2*pi pi -3/4*pi ]);  
         index = [4 2 1]*bit_to_mod ;
-        sym = mapping_matrix(index + 1);%ĞĞÏòÁ¿Êı¾İ
+        sym = mapping_matrix(index + 1);%è¡Œå‘é‡æ•°æ®
         
         
-    % 16QAMµ÷ÖÆ    
+    % 16QAMè°ƒåˆ¶    
     case    4
-        % Ó³Éä¹ØÏµ²Î¼ûËµÃ÷ÎÄµµ
+        % æ˜ å°„å…³ç³»å‚è§è¯´æ˜æ–‡æ¡£
         m=1;
         for k=-3:2:3
             for l=-3:2:3
-                % ¶Ô·ûºÅÄÜÁ¿½øĞĞ¹éÒ»»¯
+                % å¯¹ç¬¦å·èƒ½é‡è¿›è¡Œå½’ä¸€åŒ–
                 mapping_vector(m) = (k+j*l)/sqrt(10);
             m=m+1;
             end;
@@ -44,13 +44,13 @@ switch mod_type
         index = [8 4 2 1]*bit_to_mod ;
         sym = mapping_vector(index + 1);
         
-    % 64QAMµ÷ÖÆ         
+    % 64QAMè°ƒåˆ¶         
     case    6
-        % Ó³Éä¹ØÏµ²Î¼ûËµÃ÷ÎÄµµ
+        % æ˜ å°„å…³ç³»å‚è§è¯´æ˜æ–‡æ¡£
         m=1;
         for k=-7:2:7
             for l=-7:2:7
-                % ¶Ô·ûºÅÄÜÁ¿½øĞĞ¹éÒ»»¯
+                % å¯¹ç¬¦å·èƒ½é‡è¿›è¡Œå½’ä¸€åŒ–
                 mapping_vector(m) = (k+j*l)/sqrt(42); 
             m=m+1;
             end;
@@ -67,7 +67,7 @@ switch mod_type
         index = [32 16 8 4 2 1]*bit_to_mod ;
         sym = mapping_vector(index + 1);
     otherwise
-        error('µ÷ÖÆ·½Ê½ÓĞÎó! ×Ó³ÌĞòmodu_sym³ö´í'); 
+        error('è°ƒåˆ¶æ–¹å¼æœ‰è¯¯! å­ç¨‹åºmodu_symå‡ºé”™'); 
 end
 
 

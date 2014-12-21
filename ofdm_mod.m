@@ -4,7 +4,7 @@ function [transmit_signal] = ofdm_mod(st_coded,PrefixRatio,N_subc,N_sym,...
                            % N_used,Idx_used,N_Tx_ant,N_tran_sym)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ÊµÏÖOFDMµÄ»ù±¾µ÷ÖÆ
+% å®ç°OFDMçš„åŸºæœ¬è°ƒåˆ¶
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -12,23 +12,23 @@ transmit_signal = zeros(1,N_subc*N_sym*(1+PrefixRatio),N_Tx_ant);
 cp_len = round(PrefixRatio*N_subc);
 
 for ant = 1:N_Tx_ant
-    % ifft³Ësqrt(N_subc)ÒÔ±£Ö¤±ä»»Ç°ºóÄÜÁ¿²»±ä
-    % ÎÒÃÇ¼ÙÉèÆµÓòµÄÑùµãÊÇÔÚ[-fs/2  fs/2]ÖĞµÄ, fsÊÇ²ÉÑùÆµÂÊ
-    % Ê¹ÓÃfftshiftº¯ÊıÄ¿µÄÊÇÊ¹µÃ±ä»»Ç°µÄÆµÓòÑùµã×ª»»µ½[0 fs]ÖĞ,ÒÔÂú×ãIFFT±ä»»µÄÒªÇó
-    ofdm_frame = sqrt(N_subc) * ifft( fftshift( st_coded(:,:,ant), 1 ) );%°´ÁĞ½øĞĞIFFT¼ÆËã
+    % ifftä¹˜sqrt(N_subc)ä»¥ä¿è¯å˜æ¢å‰åèƒ½é‡ä¸å˜
+    % æˆ‘ä»¬å‡è®¾é¢‘åŸŸçš„æ ·ç‚¹æ˜¯åœ¨[-fs/2  fs/2]ä¸­çš„, fsæ˜¯é‡‡æ ·é¢‘ç‡
+    % ä½¿ç”¨fftshiftå‡½æ•°ç›®çš„æ˜¯ä½¿å¾—å˜æ¢å‰çš„é¢‘åŸŸæ ·ç‚¹è½¬æ¢åˆ°[0 fs]ä¸­,ä»¥æ»¡è¶³IFFTå˜æ¢çš„è¦æ±‚
+    ofdm_frame = sqrt(N_subc) * ifft( fftshift( st_coded(:,:,ant), 1 ) );%æŒ‰åˆ—è¿›è¡ŒIFFTè®¡ç®—
     cp = ofdm_frame(N_subc - cp_len + 1:N_subc ,:);
     ofdm_frame = [cp;ofdm_frame];
-    % ¼Ó´°´¦Àí
+    % åŠ çª—å¤„ç†
     
     
-    % ×ª»»Îª´®ĞĞĞÅºÅ
+    % è½¬æ¢ä¸ºä¸²è¡Œä¿¡å·
     transmit_signal(:,:,ant) = reshape( ofdm_frame, 1, N_subc*N_sym*(1+PrefixRatio) );    
     
 end
    
 
 
-% ¼ÓÇ°µ¼ĞòÁĞ,Á½¸öOFDM·ûºÅ,×÷Îª¶¨Ê±Í¬²½ºÍĞÅµÀ¹À¼ÆÊ¹ÓÃ
+% åŠ å‰å¯¼åºåˆ—,ä¸¤ä¸ªOFDMç¬¦å·,ä½œä¸ºå®šæ—¶åŒæ­¥å’Œä¿¡é“ä¼°è®¡ä½¿ç”¨
 %[transmit_signal, known_training] = add_training(transmit_signal,PrefixRatio,N_subc,N_used,...
                         %Idx_used,cp_len,N_Tx_ant,N_tran_sym);
 

@@ -1,25 +1,25 @@
 function   st_decoded = st_decoding( Recv,channel_est,N_Tx_ant, N_Rx_ant ,ST_Code, Idx_data)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ¿ÕÊ±½âÂëºÍ·Ö¼¯´¦Àí
+% ç©ºæ—¶è§£ç å’Œåˆ†é›†å¤„ç†
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-N_subc = size(Recv,1);%×ÓÔØ²¨Êı
-N_sym = size(Recv,2);%·ûºÅÊı
+N_subc = size(Recv,1);%å­è½½æ³¢æ•°
+N_sym = size(Recv,2);%ç¬¦å·æ•°
 st_decoded = zeros(N_subc, N_sym);
-% °ÑH_freq×ª»¯Îª¿ÕÊ±ÒëÂëÆ÷µÄÊäÈë¸ñÊ½,ÎªÒ»¸öN_subc*N_ant_pairµÄ¾ØÕó,Ã¿ÁĞ±íÊ¾:
+% æŠŠH_freqè½¬åŒ–ä¸ºç©ºæ—¶è¯‘ç å™¨çš„è¾“å…¥æ ¼å¼,ä¸ºä¸€ä¸ªN_subc*N_ant_pairçš„çŸ©é˜µ,æ¯åˆ—è¡¨ç¤º:
 % 1-->1 ,1-->2,...,1-->N_Rx_ant, ... ,N_Tx_ant-->1, N_Tx_ant-->2,..., N_Tx_ant-->N_Rx_ant
 
-H = squeeze(channel_est(:,1,:));  %ÆµÓòµÄĞÅµÀ
-%H=ones(N_subc,N_ant_pair );%¼ÙÉèÎªÀíÏëĞÅµÀ£¬È«1¾ØÕó
+H = squeeze(channel_est(:,1,:));  %é¢‘åŸŸçš„ä¿¡é“
+%H=ones(N_subc,N_ant_pair );%å‡è®¾ä¸ºç†æƒ³ä¿¡é“ï¼Œå…¨1çŸ©é˜µ
 
-% Èç¹ûÃ»ÓĞ·¢ËÍ·Ö¼¯,¿ÕÊ±±àÂë
+% å¦‚æœæ²¡æœ‰å‘é€åˆ†é›†,ç©ºæ—¶ç¼–ç 
 if N_Tx_ant == 1
     if N_Rx_ant ~= 1
         
-        % ×î´ó±ÈºÏ²¢, Ã¿ÌõÌìÏßÊı¾İµÄ¼ÓÈ¨Îª¸ÃÌìÏßµÄĞÅµÀÏìÓ¦
+        % æœ€å¤§æ¯”åˆå¹¶, æ¯æ¡å¤©çº¿æ•°æ®çš„åŠ æƒä¸ºè¯¥å¤©çº¿çš„ä¿¡é“å“åº”
         numerator = zeros(length(Idx_data),N_sym);
         denominator = zeros(length(Idx_data),N_sym);
         for n_r = 1:N_Rx_ant
@@ -33,30 +33,30 @@ if N_Tx_ant == 1
         %st_decoded(Idx_data,:) = Recv(Idx_data,:)./repmat(channel_est(Idx_data),1,N_sym);
         st_decoded(Idx_data,:) = Recv(Idx_data,:).*conj(repmat(channel_est(Idx_data),1,N_sym))...
                                     ./abs(repmat(channel_est(Idx_data),1,N_sym)).^2;
-        % st_decoded = Recv; % ²âÊÔ
+        % st_decoded = Recv; % æµ‹è¯•
     end
 
-% Èç¹ûÓĞ·¢ËÍ·Ö¼¯
+% å¦‚æœæœ‰å‘é€åˆ†é›†
 else
-% Èç¹ûÊ¹ÓÃ¿ÕÊ±·Ö×éÂë
+% å¦‚æœä½¿ç”¨ç©ºæ—¶åˆ†ç»„ç 
     if ST_Code == 1
     
         if (N_Tx_ant == 2)&(N_Rx_ant == 1)
-            % ¼òµ¥2·¢1ÊÕSTBC½âÂë
+            % ç®€å•2å‘1æ”¶STBCè§£ç 
         
         elseif (N_Tx_ant == 2)&(N_Rx_ant == 2)
-            % 2·¢2ÊÕSTBC½âÂë
+            % 2å‘2æ”¶STBCè§£ç 
 
-            % ½ÓÊÕ·ûºÅ°´ÕÕN_sym/N_Tx_ant ×éÀ´´¦Àí
-            for n = 1:N_sym/N_Tx_ant % 1£º10/2=1:5
-                % ¹¹ÔìÊäÈë½ø¿ÕÊ±ÒëÂëÆ÷µÄ·ûºÅ,ÓÃt±íÊ¾Ê±¼äºÅ,a±íÊ¾ÌìÏßºÅ,Æä¸ñÊ½Îª:
+            % æ¥æ”¶ç¬¦å·æŒ‰ç…§N_sym/N_Tx_ant ç»„æ¥å¤„ç†
+            for n = 1:N_sym/N_Tx_ant % 1ï¼š10/2=1:5
+                % æ„é€ è¾“å…¥è¿›ç©ºæ—¶è¯‘ç å™¨çš„ç¬¦å·,ç”¨tè¡¨ç¤ºæ—¶é—´å·,aè¡¨ç¤ºå¤©çº¿å·,å…¶æ ¼å¼ä¸º:
                 % [Recv(t1,a1) Recv(t2,a1) Recv(t1,a2) Recv(t2,a2)].
                 R = [];
                 for ant = 1:N_Rx_ant
-                    R = [R  Recv(:,(n-1)*N_Tx_ant+1:n*N_Tx_ant,ant) ];%¶ÔÓÚ2X2MIMOÀ´Ëµ£¬R¾ØÕó¼´Îª[Xe  -conj(Xo)  Xo  conj(Xe)]
+                    R = [R  Recv(:,(n-1)*N_Tx_ant+1:n*N_Tx_ant,ant) ];%å¯¹äº2X2MIMOæ¥è¯´ï¼ŒRçŸ©é˜µå³ä¸º[Xe  -conj(Xo)  Xo  conj(Xe)]
                 end
                 
-                %ÒëÂëÖ®Ç°ÏÈ½øĞÔ×Ô¸ÉÈÅ
+                %è¯‘ç ä¹‹å‰å…ˆè¿›æ€§è‡ªå¹²æ‰°
                 
                 output = stbc_decode_TX2RX2( H, R );
                 st_decoded(:,(n-1)*N_Tx_ant+1:n*N_Tx_ant) = output;
@@ -64,11 +64,11 @@ else
 
 
         elseif (N_Tx_ant == 2)&(N_Rx_ant == 4)
-            % 2·¢4ÊÕSTBC½âÂë
+            % 2å‘4æ”¶STBCè§£ç 
             output=stbc_decode_TX2RX4(H,R)
 
         elseif (N_Tx_ant == 4)&(N_Rx_ant == 4)
-            % 2·¢4ÊÕSTBC½âÂë
+            % 2å‘4æ”¶STBCè§£ç 
             output=stbc_decode_TX4RX4(H,R)
     
         else
@@ -76,7 +76,7 @@ else
         end
     
         
-% Ê¹ÓÃ¿ÕÊ±¸ñÂë    
+% ä½¿ç”¨ç©ºæ—¶æ ¼ç     
     elseif ST_Code == 2
     
     end

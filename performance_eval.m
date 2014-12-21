@@ -1,17 +1,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%性能评估
+%鎬ц兘璇勪及
 
 
-save saved_data.mat;    % 保存数据
+save saved_data.mat;    % 淇濆瓨鏁版嵁
 
 
 snr = [Eb_NoStart:Eb_NoInterval:Eb_NoEnd];
 
 
-% 以下均考虑第u个用户的误比特率性能
+% 浠ヤ笅鍧囪�冭檻绗瑄涓敤鎴风殑璇瘮鐗圭巼鎬ц兘
 u = 1;
 
-% 误比特率性能曲线
+% 璇瘮鐗圭巼鎬ц兘鏇茬嚎
 
 err_rate_user = sum(user_bit_err{u},1)./( length(user_bit{u})*N_frame) ;
 C = C{u};
@@ -22,7 +22,7 @@ grid on ;
 xlabel('Eb/No (dB)','FontSize',12);
 ylabel('BER','FontSize',12);
 xlim([Eb_NoStart Eb_NoEnd]);
-title('系统BER~Eb/No性能曲线');
+title('绯荤粺BER~Eb/No鎬ц兘鏇茬嚎');
 hold on
 
  figure(2);
@@ -33,7 +33,7 @@ hold on
  xlabel('Eb/No (dB)','FontSize',12);
  ylabel('Capacity','FontSize',12);
  xlim([Eb_NoStart Eb_NoEnd ]);
- title('系统CAPACITY~Eb/No性能曲线');
+ title('绯荤粺CAPACITY~Eb/No鎬ц兘鏇茬嚎');
  hold on
 
 

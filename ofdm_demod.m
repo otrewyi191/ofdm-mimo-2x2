@@ -2,23 +2,23 @@ function [data_sym] = ofdm_demod(fine_freq_out,PrefixRatio,N_subc,N_sym,N_tran_s
 %function [training_sym ,data_sym] =
 %ofdm_demod(fine_freq_out,PrefixRatio,N_subc,N_sym,N_tran_sym,N_Rx_ant)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ÊµÏÖOFDMµÄ»ù±¾½âµ÷
+% å®ç°OFDMçš„åŸºæœ¬è§£è°ƒ
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%training_sym = zeros(N_subc,1,N_Rx_ant);%µÚÒ»¸ö·ûºÅÎªÑµÁ·ĞòÁĞ·ûºÅ
+%training_sym = zeros(N_subc,1,N_Rx_ant);%ç¬¬ä¸€ä¸ªç¬¦å·ä¸ºè®­ç»ƒåºåˆ—ç¬¦å·
 data_sym = zeros(N_subc,N_sym,N_Rx_ant);
 cp_len = round(PrefixRatio*N_subc);
 
 for ant = 1:N_Rx_ant
     ofdm_tmp = reshape( fine_freq_out(1,:,ant), N_subc*(1+PrefixRatio) , N_sym + N_tran_sym  );
     cp_cut = ofdm_tmp( cp_len + 1:end,: );
-    % fft³Ë1/sqrt(N_subc)ÒÔ±£Ö¤±ä»»Ç°ºóÄÜÁ¿²»±ä
-    % ÎÒÃÇ¼ÙÉèÆµÓòµÄÑùµãÊÇÔÚ[-fs/2  fs/2]ÖĞµÄ, fsÊÇ²ÉÑùÆµÂÊ
-    % fftshiftÄ¿µÄÊÇÊ¹µÃ±ä»»ºóµÄÆµÓòÑùµãÔÚ[-fs/2  fs/2]ÖĞ,¶ø²»ÊÇ[0 fs]ÖĞ
+    % fftä¹˜1/sqrt(N_subc)ä»¥ä¿è¯å˜æ¢å‰åèƒ½é‡ä¸å˜
+    % æˆ‘ä»¬å‡è®¾é¢‘åŸŸçš„æ ·ç‚¹æ˜¯åœ¨[-fs/2  fs/2]ä¸­çš„, fsæ˜¯é‡‡æ ·é¢‘ç‡
+    % fftshiftç›®çš„æ˜¯ä½¿å¾—å˜æ¢åçš„é¢‘åŸŸæ ·ç‚¹åœ¨[-fs/2  fs/2]ä¸­,è€Œä¸æ˜¯[0 fs]ä¸­
     ofdm_sym(:,:,ant) = fftshift(1/sqrt(N_subc) * fft( cp_cut ), 1);
 end
 
-%training_sym = ofdm_sym(:,1,:);             % ÓÃÓÚĞÅµÀ¹À¼ÆµÄÑµÁ··ûºÅ
-data_sym = ofdm_sym(:, 1:N_sym ,:);     % Êı¾İOFDM·ûºÅ, °üÀ¨µ¼Æµ·ûºÅ
+%training_sym = ofdm_sym(:,1,:);             % ç”¨äºä¿¡é“ä¼°è®¡çš„è®­ç»ƒç¬¦å·
+data_sym = ofdm_sym(:, 1:N_sym ,:);     % æ•°æ®OFDMç¬¦å·, åŒ…æ‹¬å¯¼é¢‘ç¬¦å·
 

@@ -1,42 +1,42 @@
 clc;
 clear all;
 %close all;
-N_Tx_ant = 2;  %·¢ËÍÌìÏßÎª2
-N_Rx_ant = 2;  %½ÓÊÕÌìÏßÎª2
-N_user = 1;    %ÓÃ»§ÊıÎª4
+N_Tx_ant = 2;  %å‘é€å¤©çº¿ä¸º2
+N_Rx_ant = 2;  %æ¥æ”¶å¤©çº¿ä¸º2
+N_user = 1;    %ç”¨æˆ·æ•°ä¸º4
 
-N_sym = 20;     %  Ã¿Ö¡ÖĞOFDM·ûºÅÊı,²»°üÀ¨Á½¸öÇ°×ºOFDM·ûºÅ LTEÖĞÒ»Ö¡³¤¶ÈÎª6~7¸öOFDM·ûºÅ
-N_frame = 10;   %  ·ÂÕæµÄÖ¡¸öÊı
-% ·ÂÕæÑ­»·¿ªÊ¼µÄEb_No,¶¨ÒåÎªÃ¿±ÈÌØµÄÄÜÁ¿Eb
-% ºÍÔëÉùµÄµ¥±ß¹¦ÂÊÆ×ÃÜ¶ÈNoµÄ±ÈÖµ, dBÖµ
+N_sym = 20;     %  æ¯å¸§ä¸­OFDMç¬¦å·æ•°,ä¸åŒ…æ‹¬ä¸¤ä¸ªå‰ç¼€OFDMç¬¦å· LTEä¸­ä¸€å¸§é•¿åº¦ä¸º6~7ä¸ªOFDMç¬¦å·
+N_frame = 10;   %  ä»¿çœŸçš„å¸§ä¸ªæ•°
+% ä»¿çœŸå¾ªç¯å¼€å§‹çš„Eb_No,å®šä¹‰ä¸ºæ¯æ¯”ç‰¹çš„èƒ½é‡Eb
+% å’Œå™ªå£°çš„å•è¾¹åŠŸç‡è°±å¯†åº¦Noçš„æ¯”å€¼, dBå€¼
 Eb_NoStart = 0;                                                          
-Eb_NoInterval = 2;      % ·ÂÕæEb/NoµÄ¼ä¸ôÖµ(dB)
-Eb_NoEnd = 24;          % ·ÂÕæEb/NoµÄÖÕÖ¹Öµ(dB)   
-%·ÂÕæ²ÎÊıÑ¡ÔñµÄÊÇLTEÏµÍ³´ø¿íÎª10MHzÊ±²ÎÊı
-fc = 5e9;                               %  ÔØ²¨ÆµÂÊ(Hz)   5GHz
-%  Bw = 20e6;                              %  »ù´øÏµÍ³´ø¿í(Hz) 10MHz
-Bw = 10e6;                              %  »ù´øÏµÍ³´ø¿í(Hz) 10MHz
-fs = 15.36e6;                           %  »ù´ø³éÑùÆµÂÊ 1024*15KHz=15360000Hz
-T_sample = 1/fs;                        %  »ù´øÊ±ÓòÑùµã¼ä¸ô(s)
-N_subc = 1024;                          %  OFDM ×ÓÔØ²¨×ÜÊı£¬¼´FFTµãÊı
-Idx_used = [-300:-1 1:300];             %  Ê¹ÓÃµÄ×ÓÔØ²¨±àºÅ£¬Ò»¹²Ê¹ÓÃ600¸ö×ÓÔØ²¨
-Idx_pilot = [-300:25:-25 25:25:300];    %  µ¼Æµ×ÓÔØ²¨±àºÅ,µ¼Æµ¼ä¸ôÎª24£¬¶ÔÓ¦ÓÚ×ø±êÎª0µÄ×ÓÔØ²¨²»Ó³ÉäÊı¾İ»òÕßµ¼Æµ£¬Îª·ÇLTE±ê×¼
-N_used = length(Idx_used);              % Ê¹ÓÃµÄ×ÓÔØ²¨Êı 600
-N_pilot = length(Idx_pilot);            % µ¼ÆµµÄ×ÓÔØ²¨Êı
-N_data = N_used - N_pilot;              % Ò»¸öOFDM·ûºÅÄÚËùÓĞÓÃ»§·¢ËÍµÄÊı¾İµÄ×ÓÔØ²¨Êı
+Eb_NoInterval = 2;      % ä»¿çœŸEb/Noçš„é—´éš”å€¼(dB)
+Eb_NoEnd = 24;          % ä»¿çœŸEb/Noçš„ç»ˆæ­¢å€¼(dB)   
+%ä»¿çœŸå‚æ•°é€‰æ‹©çš„æ˜¯LTEç³»ç»Ÿå¸¦å®½ä¸º10MHzæ—¶å‚æ•°
+fc = 5e9;                               %  è½½æ³¢é¢‘ç‡(Hz)   5GHz
+%  Bw = 20e6;                              %  åŸºå¸¦ç³»ç»Ÿå¸¦å®½(Hz) 10MHz
+Bw = 10e6;                              %  åŸºå¸¦ç³»ç»Ÿå¸¦å®½(Hz) 10MHz
+fs = 15.36e6;                           %  åŸºå¸¦æŠ½æ ·é¢‘ç‡ 1024*15KHz=15360000Hz
+T_sample = 1/fs;                        %  åŸºå¸¦æ—¶åŸŸæ ·ç‚¹é—´éš”(s)
+N_subc = 1024;                          %  OFDM å­è½½æ³¢æ€»æ•°ï¼Œå³FFTç‚¹æ•°
+Idx_used = [-300:-1 1:300];             %  ä½¿ç”¨çš„å­è½½æ³¢ç¼–å·ï¼Œä¸€å…±ä½¿ç”¨600ä¸ªå­è½½æ³¢
+Idx_pilot = [-300:25:-25 25:25:300];    %  å¯¼é¢‘å­è½½æ³¢ç¼–å·,å¯¼é¢‘é—´éš”ä¸º24ï¼Œå¯¹åº”äºåæ ‡ä¸º0çš„å­è½½æ³¢ä¸æ˜ å°„æ•°æ®æˆ–è€…å¯¼é¢‘ï¼Œä¸ºéLTEæ ‡å‡†
+N_used = length(Idx_used);              % ä½¿ç”¨çš„å­è½½æ³¢æ•° 600
+N_pilot = length(Idx_pilot);            % å¯¼é¢‘çš„å­è½½æ³¢æ•°
+N_data = N_used - N_pilot;              % ä¸€ä¸ªOFDMç¬¦å·å†…æ‰€æœ‰ç”¨æˆ·å‘é€çš„æ•°æ®çš„å­è½½æ³¢æ•°
 Idx_data = zeros(1,N_data);
-N_tran_sym = 0;                         %Ç°µ¼ĞòÁĞµÄ³¤¶È ´Ë´¦Îª²»Ìí¼ÓÇ°µ¼ĞòÁĞ
+N_tran_sym = 0;                         %å‰å¯¼åºåˆ—çš„é•¿åº¦ æ­¤å¤„ä¸ºä¸æ·»åŠ å‰å¯¼åºåˆ—
 w0 = 0;
-phase_intial_err = exp(i*w0);           %³õÊ¼ÏàÎ»²î
+phase_intial_err = exp(i*w0);           %åˆå§‹ç›¸ä½å·®
 w = 0;
 coffients =i*pi*w;               
-%F = diag([1,exp(coffients*1),exp(coffients*2),exp(coffients*3),exp(coffients*4),exp(coffients*5),exp(coffients*6),exp(coffients*7),exp(coffients*8),exp(coffients*(N_sym - 1))]); %·¢ËÍĞÅºÅÉÏÃ¿Ò»¸ö·ûºÅµÄÏàÎ»²î
+%F = diag([1,exp(coffients*1),exp(coffients*2),exp(coffients*3),exp(coffients*4),exp(coffients*5),exp(coffients*6),exp(coffients*7),exp(coffients*8),exp(coffients*(N_sym - 1))]); %å‘é€ä¿¡å·ä¸Šæ¯ä¸€ä¸ªç¬¦å·çš„ç›¸ä½å·®
 F = eye(20);
 
 
 
 
-% µÃµ½Êı¾İ×ÓÔØ²¨µÄ±àºÅ
+% å¾—åˆ°æ•°æ®å­è½½æ³¢çš„ç¼–å·
         m = 1; n = 1;
     for k  = 1:length(Idx_used)        
         if Idx_used(k) ~= Idx_pilot(m);
@@ -48,100 +48,100 @@ F = eye(20);
             end
         end
     end
-    %  Îª±à³ÌÊ¹ÓÃ·½±ã,µ÷Õû×ÓÔØ²¨±àºÅÎª´Ó1¿ªÊ¼,µ½×ÓÔØ²¨×ÜÊı
-Idx_used = Idx_used + N_subc/2 +1;    %Ê¹ÓÃµÄ×ÓÔØ²¨×ø±ê   
-Idx_pilot = Idx_pilot + N_subc/2 +1;  %µ¼Æµ×ÓÔØ²¨×ø±ê                                                  
-Idx_data = Idx_data + N_subc/2 +1;    %Êı¾İ×ÓÔØ²¨×ø±ê£¬×ø±ê0+1024/2+1=513×ÓÔØ²¨Îª¿Õ£¬¼È²»ÊÇÊı¾İ£¬Ò²²»ÊÇµ¼Æµ
-PilotValue = ones(N_pilot,1);%µ¼ÆµÖµÎªÈ«1
-PrefixRatio = 1/4;           %Ñ­»·Ç°×ºËùÕ¼±ÈÀı     
-T_sym = T_sample*( (1 + PrefixRatio)*N_subc );%Ò»¸öOFDM·ûºÅ£¨°üº¬Ñ­»·Ç°×º£©µÄ³ÖĞøÊ±¼ä
-fprintf('µ÷ÖÆ·½Ê½Ñ¡Ôñ£¬2--QPSKµ÷ÖÆ, 3--8PSK,4--16QAMµ÷ÖÆ,6--64QAM\n\n');
-Modulation = input('Modulation = \n'); %µ÷ÖÆ·½Ê½Ñ¡Ôñ£¬2--QPSKµ÷ÖÆ, 3--8PSK,4--16QAMµ÷ÖÆ,6--64QAM
+    %  ä¸ºç¼–ç¨‹ä½¿ç”¨æ–¹ä¾¿,è°ƒæ•´å­è½½æ³¢ç¼–å·ä¸ºä»1å¼€å§‹,åˆ°å­è½½æ³¢æ€»æ•°
+Idx_used = Idx_used + N_subc/2 +1;    %ä½¿ç”¨çš„å­è½½æ³¢åæ ‡   
+Idx_pilot = Idx_pilot + N_subc/2 +1;  %å¯¼é¢‘å­è½½æ³¢åæ ‡                                                  
+Idx_data = Idx_data + N_subc/2 +1;    %æ•°æ®å­è½½æ³¢åæ ‡ï¼Œåæ ‡0+1024/2+1=513å­è½½æ³¢ä¸ºç©ºï¼Œæ—¢ä¸æ˜¯æ•°æ®ï¼Œä¹Ÿä¸æ˜¯å¯¼é¢‘
+PilotValue = ones(N_pilot,1);%å¯¼é¢‘å€¼ä¸ºå…¨1
+PrefixRatio = 1/4;           %å¾ªç¯å‰ç¼€æ‰€å æ¯”ä¾‹     
+T_sym = T_sample*( (1 + PrefixRatio)*N_subc );%ä¸€ä¸ªOFDMç¬¦å·ï¼ˆåŒ…å«å¾ªç¯å‰ç¼€ï¼‰çš„æŒç»­æ—¶é—´
+fprintf('è°ƒåˆ¶æ–¹å¼é€‰æ‹©ï¼Œ2--QPSKè°ƒåˆ¶, 3--8PSK,4--16QAMè°ƒåˆ¶,6--64QAM\n\n');
+Modulation = input('Modulation = \n'); %è°ƒåˆ¶æ–¹å¼é€‰æ‹©ï¼Œ2--QPSKè°ƒåˆ¶, 3--8PSK,4--16QAMè°ƒåˆ¶,6--64QAM
 
-Es = 1;                 % ÔÚQPSK, 16QAMµ÷ÖÆ·½Ê½ÏÂ,·ûºÅÄÜÁ¿¶¼±»¹éÒ»»¯ 
-Eb = Es/Modulation;     % Ã¿±ÈÌØÄÜÁ¿
-N_ant_pair = N_Tx_ant * N_Rx_ant;   % ÊÕ·¢ÌìÏß¶ÔµÄÊıÄ¿
-%ST_Code = 1;   % ¿ÕÊ±±àÂë£º , 1--¿ÕÊ±·Ö×éÂë
-ST_Code = 0;   % ¿ÕÊ±±àÂë£º , 1--¿ÕÊ±·Ö×éÂë
+Es = 1;                 % åœ¨QPSK, 16QAMè°ƒåˆ¶æ–¹å¼ä¸‹,ç¬¦å·èƒ½é‡éƒ½è¢«å½’ä¸€åŒ– 
+Eb = Es/Modulation;     % æ¯æ¯”ç‰¹èƒ½é‡
+N_ant_pair = N_Tx_ant * N_Rx_ant;   % æ”¶å‘å¤©çº¿å¯¹çš„æ•°ç›®
+%ST_Code = 1;   % ç©ºæ—¶ç¼–ç ï¼š , 1--ç©ºæ—¶åˆ†ç»„ç 
+ST_Code = 0;   % ç©ºæ—¶ç¼–ç ï¼š , 1--ç©ºæ—¶åˆ†ç»„ç 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 snr_idx = 1;
 for Eb_No_dB = Eb_NoStart:Eb_NoInterval:Eb_NoEnd  
-    Eb_No = 10^(Eb_No_dB/10);       %ÏßĞÔĞÅÔë±È
-    var_noise = Eb/(2*Eb_No);       % ÔëÉùÑùµãµÄ¹¦ÂÊ   NoÎªµ¥±ß¹¦ÂÊ No=2*var_noise
+    Eb_No = 10^(Eb_No_dB/10);       %çº¿æ€§ä¿¡å™ªæ¯”
+    var_noise = Eb/(2*Eb_No);       % å™ªå£°æ ·ç‚¹çš„åŠŸç‡   Noä¸ºå•è¾¹åŠŸç‡ No=2*var_noise
 
     
-     for frame = 1:N_frame          %ÖğÖ¡Ñ­»·¼ÆËã
-         %²»Ìí¼Ó¶à¾¶ĞÅµÀ£¬²»Ìí¼Ó×ÔÊÊÓ¦±àÂë£¬ÎŞĞÅµÀ¹À¼ÆµÈ
-         [user_bit,user_bit_cnt]  = user_bit_gen( N_user, N_data ,N_sym , Modulation );% ¶àÓÃ»§Êı¾İÉú³ÉÄ£¿é£¬Ã¿¸öÓÃ»§Ò»Ö¡µÄÊı¾İ
-         [user_bit_near,user_bit_near_cnt]  = user_bit_gen( N_user, N_data ,N_sym , Modulation );% ¶àÓÃ»§Êı¾İÉú³ÉÄ£¿é£¬Ã¿¸öÓÃ»§Ò»Ö¡µÄÊı¾İ
+     for frame = 1:N_frame          %é€å¸§å¾ªç¯è®¡ç®—
+         %ä¸æ·»åŠ å¤šå¾„ä¿¡é“ï¼Œä¸æ·»åŠ è‡ªé€‚åº”ç¼–ç ï¼Œæ— ä¿¡é“ä¼°è®¡ç­‰
+         [user_bit,user_bit_cnt]  = user_bit_gen( N_user, N_data ,N_sym , Modulation );% å¤šç”¨æˆ·æ•°æ®ç”Ÿæˆæ¨¡å—ï¼Œæ¯ä¸ªç”¨æˆ·ä¸€å¸§çš„æ•°æ®
+         [user_bit_near,user_bit_near_cnt]  = user_bit_gen( N_user, N_data ,N_sym , Modulation );% å¤šç”¨æˆ·æ•°æ®ç”Ÿæˆæ¨¡å—ï¼Œæ¯ä¸ªç”¨æˆ·ä¸€å¸§çš„æ•°æ®
          
-         coded_user_bit=user_bit;%ÎŞĞÅµÀ±àÂë£¬RSÂë£¬¾í»ıÂëµÈ
+         coded_user_bit=user_bit;%æ— ä¿¡é“ç¼–ç ï¼ŒRSç ï¼Œå·ç§¯ç ç­‰
          coded_user_bit_near=user_bit_near;
          
-         AllocMethod=1;%×ÓÔØ²¨·ÖÅä·½·¨:ÏàÁÚ·ÖÅä
-         %×ÓÔØ²¨·ÖÅä£¬¶ÔÓ¦ÓÚÎŞ×ÔÊÊÓ¦µ÷ÖÆµÄ¹Ì¶¨×ÓÔØ²¨·ÖÅä·½·¨
+         AllocMethod=1;%å­è½½æ³¢åˆ†é…æ–¹æ³•:ç›¸é‚»åˆ†é…
+         %å­è½½æ³¢åˆ†é…ï¼Œå¯¹åº”äºæ— è‡ªé€‚åº”è°ƒåˆ¶çš„å›ºå®šå­è½½æ³¢åˆ†é…æ–¹æ³•
          [user_subc_alloc , mod_subc ,pwr_subc, pad_bit_cnt]  = adpt_mod_para...
                 ( coded_user_bit,N_sym,Idx_data ,AllocMethod ); 
             
          [user_subc_alloc_near , mod_subc_near ,pwr_subc_near, pad_bit_cnt_near]  = adpt_mod_para...
                 ( coded_user_bit_near,N_sym,Idx_data ,AllocMethod );    
             
-         TurnOn.AdptMod=0;%ÎŞ×ÔÊÊÓ¦µ÷ÖÆ
-         % °´ÕÕ¸ø¶¨µÄÃ¿ÓÃ»§,Ã¿×ÓÔØ²¨µÄµ÷ÖÆ·½Ê½,½øĞĞµ÷ÖÆ
+         TurnOn.AdptMod=0;%æ— è‡ªé€‚åº”è°ƒåˆ¶
+         % æŒ‰ç…§ç»™å®šçš„æ¯ç”¨æˆ·,æ¯å­è½½æ³¢çš„è°ƒåˆ¶æ–¹å¼,è¿›è¡Œè°ƒåˆ¶
          mod_sym =  modulator(coded_user_bit,user_subc_alloc,mod_subc,...
             pwr_subc, pad_bit_cnt ,N_subc, N_sym,TurnOn.AdptMod );
          mod_sym_near =  modulator(coded_user_bit_near,user_subc_alloc_near,mod_subc_near,...
             pwr_subc_near, pad_bit_cnt_near ,N_subc, N_sym,TurnOn.AdptMod );
         
-        % ·¢ËÍ·Ö¼¯, Ê¹ÓÃ¿ÕÊ±±àÂë
+        % å‘é€åˆ†é›†, ä½¿ç”¨ç©ºæ—¶ç¼–ç 
          st_coded = st_coding( mod_sym,N_Tx_ant,ST_Code); 
          st_coded_near = st_coding( mod_sym_near,N_Tx_ant,ST_Code); 
  
         
-        % ¼Óµ¼Æµ
+        % åŠ å¯¼é¢‘
         pilot_added = pilot_insert(st_coded,Idx_pilot,PilotValue);
         pilot_added_near = pilot_insert(st_coded_near,Idx_pilot,PilotValue);
         
-        % OFDMµ÷ÖÆ,¼ÓÑ­»·Ç°×º£¬¼ÓÇ°µ¼ĞòÁĞ. Èç¹ûÊ¹ÓÃ·¢ËÍ·Ö¼¯,ÔòÊä³ö¶àÌõÌìÏßµÄĞÅºÅ
+        % OFDMè°ƒåˆ¶,åŠ å¾ªç¯å‰ç¼€ï¼ŒåŠ å‰å¯¼åºåˆ—. å¦‚æœä½¿ç”¨å‘é€åˆ†é›†,åˆ™è¾“å‡ºå¤šæ¡å¤©çº¿çš„ä¿¡å·
         [transmit_signal] = ofdm_mod(pilot_added,PrefixRatio,N_subc,N_sym,N_used,...
-            Idx_used,N_Tx_ant,N_tran_sym);%Êµ¼Êº¯ÊıÖĞ²»Ìí¼ÓÇ°µ¼ĞòÁĞ
+            Idx_used,N_Tx_ant,N_tran_sym);%å®é™…å‡½æ•°ä¸­ä¸æ·»åŠ å‰å¯¼åºåˆ—
         [transmit_signal_near] = ofdm_mod(pilot_added_near,PrefixRatio,N_subc,N_sym,N_used,...
-            Idx_used,N_Tx_ant,N_tran_sym);%Êµ¼Êº¯ÊıÖĞ²»Ìí¼ÓÇ°µ¼ĞòÁĞ
+            Idx_used,N_Tx_ant,N_tran_sym);%å®é™…å‡½æ•°ä¸­ä¸æ·»åŠ å‰å¯¼åºåˆ—
         
         
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        transmit_signal_power = var(transmit_signal);%·¢ËÍĞÅºÅ¹¦ÂÊ
-        transmit_signal_near_power = var(transmit_signal);%·¢ËÍĞÅºÅ¹¦ÂÊ
+        transmit_signal_power = var(transmit_signal);%å‘é€ä¿¡å·åŠŸç‡
+        transmit_signal_near_power = var(transmit_signal);%å‘é€ä¿¡å·åŠŸç‡
          P = 10*log10(abs(10000*transmit_signal_near_power)./abs(transmit_signal_power));
         length_noise=size(transmit_signal,2);
-        noise=gausnoise(Eb_No_dB,transmit_signal_power,length_noise);%²úÉú¸´ÔëÉùĞòÁĞ
+        noise=gausnoise(Eb_No_dB,transmit_signal_power,length_noise);%äº§ç”Ÿå¤å™ªå£°åºåˆ—
    
-        recv_signal =  transmit_signal+ 100*transmit_signal_near + noise;%½ÓÊÕµ½µÄĞÅºÅ¼ÓÔëÉù%%%%%%%%%%%%%%%%ÕâµÄ100,Ö»ÊÇÖ¸µÄ½ÓÊÕµ½µÄĞÅºÅ±ÈÔ­À´µÄ¸ßÁË¶àÉÙ£¬±È²»ÊÇÖ¸ĞÅµÀ£¬ĞÅµÀÈÔÖ»ÊÇ1£¡£¡£¡
+        recv_signal =  transmit_signal+ 100*transmit_signal_near + noise;%æ¥æ”¶åˆ°çš„ä¿¡å·åŠ å™ªå£°%%%%%%%%%%%%%%%%è¿™çš„100,åªæ˜¯æŒ‡çš„æ¥æ”¶åˆ°çš„ä¿¡å·æ¯”åŸæ¥çš„é«˜äº†å¤šå°‘ï¼Œæ¯”ä¸æ˜¯æŒ‡ä¿¡é“ï¼Œä¿¡é“ä»åªæ˜¯1ï¼ï¼ï¼
         
       
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        for u = 1:N_user        % ¶à¸öÓÃ»§½ÓÊÕ»úµÄÑ­»·
+        for u = 1:N_user        % å¤šä¸ªç”¨æˆ·æ¥æ”¶æœºçš„å¾ªç¯
              
-            % ½ÓÊÕµ½µÄĞÅºÅ½øĞĞLSĞÅµÀ¹À¼Æ
-            [X_restraint_ehco_est,MSE_near_after_ch_est,h_mse_all_near_ch] = LS_restrain_ehco_ch_est(transmit_signal,transmit_signal_near,recv_signal,PrefixRatio,N_subc,N_sym,N_Rx_ant,F);%%%%ÏÖÔÚµ÷ÓÃµÄº¯ÊıÊÇÔÚ¼ÓÉÏÁËµ¼ÆµËãµÄ¶Ô½ü¶ËĞÅºÅµÄ¹À¼ÆÍêÈ«Ò»Ñù£¬ÕâÓĞÎÊÌâ!!!!
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Ò²ÓĞ¿ÉÄÜÊÇÒòÎªĞÅµÀ¾ÍÊÇ1ÊÇÍêÈ«ÀíÏëµÄÇé¿öÏÂ,µ«ÊÇ¼ÓÁËÔëÉù°¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Ò²¿ÉÄÜÊÇÒòÎªÔëÉùÏà½Ï½ü¶ËĞÅºÅÀ´Ëµ£¬Ò²ÊÇ±È½ÏĞ¡µÄ£¬È·ÊµÃ¿¸öÔëÉù½ÚµãÉÏ(ÔÚÑ­»·Ç°)£¬½ü¶Ë¾ÍÊÇ²»³É100£¬Ò²ÔÚ1e+4,¼´Ê¹ÔÚÑ­»·ÀïÓÃ
+            % æ¥æ”¶åˆ°çš„ä¿¡å·è¿›è¡ŒLSä¿¡é“ä¼°è®¡
+            [X_restraint_ehco_est,MSE_near_after_ch_est,h_mse_all_near_ch] = LS_restrain_ehco_ch_est(transmit_signal,transmit_signal_near,recv_signal,PrefixRatio,N_subc,N_sym,N_Rx_ant,F);%%%%ç°åœ¨è°ƒç”¨çš„å‡½æ•°æ˜¯åœ¨åŠ ä¸Šäº†å¯¼é¢‘ç®—çš„å¯¹è¿‘ç«¯ä¿¡å·çš„ä¼°è®¡å®Œå…¨ä¸€æ ·ï¼Œè¿™æœ‰é—®é¢˜!!!!
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ä¹Ÿæœ‰å¯èƒ½æ˜¯å› ä¸ºä¿¡é“å°±æ˜¯1æ˜¯å®Œå…¨ç†æƒ³çš„æƒ…å†µä¸‹,ä½†æ˜¯åŠ äº†å™ªå£°å•Šï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ä¹Ÿå¯èƒ½æ˜¯å› ä¸ºå™ªå£°ç›¸è¾ƒè¿‘ç«¯ä¿¡å·æ¥è¯´ï¼Œä¹Ÿæ˜¯æ¯”è¾ƒå°çš„ï¼Œç¡®å®æ¯ä¸ªå™ªå£°èŠ‚ç‚¹ä¸Š(åœ¨å¾ªç¯å‰)ï¼Œè¿‘ç«¯å°±æ˜¯ä¸æˆ100ï¼Œä¹Ÿåœ¨1e+4,å³ä½¿åœ¨å¾ªç¯é‡Œç”¨
             %for i = 1:2   v_1(i,1) =
-            %10*log10(v(:,:,i)/v_new(:,:,i));end£¬Ã¿ÌõÌìÏßÉÏ»ù±¾ÔÚ30dB×óÓÒ
-            %Ö»¶Ô½ü¶ËĞÅºÅ½øĞĞ¹À¼Æ£¬È»ºó·µ»ØÖ÷º¯Êı£¬½«¹À¼Æµ½µÄĞÅºÅ¼õÈ¥£¬È»ºóÔÚÊ¹ÓÃZF·½·¨À´¼ì²âÔ¶¶ËĞÅºÅ£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡
-            Y_restraint_ehco = recv_signal - 100 * X_restraint_ehco_est;  %ÕâµÄ100 ¿ÉÒÔ¼Óµ½µ÷ÓÃº¯ÊıÖĞ
+            %10*log10(v(:,:,i)/v_new(:,:,i));endï¼Œæ¯æ¡å¤©çº¿ä¸ŠåŸºæœ¬åœ¨30dBå·¦å³
+            %åªå¯¹è¿‘ç«¯ä¿¡å·è¿›è¡Œä¼°è®¡ï¼Œç„¶åè¿”å›ä¸»å‡½æ•°ï¼Œå°†ä¼°è®¡åˆ°çš„ä¿¡å·å‡å»ï¼Œç„¶ååœ¨ä½¿ç”¨ZFæ–¹æ³•æ¥æ£€æµ‹è¿œç«¯ä¿¡å·ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼
+            Y_restraint_ehco = recv_signal - 100 * X_restraint_ehco_est;  %è¿™çš„100 å¯ä»¥åŠ åˆ°è°ƒç”¨å‡½æ•°ä¸­
             
-            %%%%%%%%%%%%%%%%%%%%SINR = Êä³öµÄÔ¶¶ËĞÅºÅ/¸ÉÈÅĞÅºÅ+ÔëÉù£¬¼øÓÚÄ¿Ç°µÄÊ£Óà½ü¶ËĞÅºÅÎª0£¬Ò²¾ÍÊÇËµ
-            %%%%%%%%%%%%%%%%%%%%SINR = Êä³öµÄÔ¶¶ËĞÅºÅ/Ê£ÓàµÄÔëÉù£¨= ¹À¼Æ³öµÄÔ¶¶Ë -Êµ¼ÊÊä³öµÄÔ¶¶Ë£©£»¼øÓÚ¶ÔÔ¶¶ËĞÅºÅ¹¦ÂÊÒÑÖªµÄÇé¿öÏÂ
-            %%%%%%%%%%%%%%%%%%%%ÒªÈÃËûÊÇÑ­»·µÃ³öµÄÖµ£¬·ñÔò¾ÍÖ»ÄÜµÃµ½×îºóÒ»´ÎÑ­»·µÄµÃµ½µÄÖµ
+            %%%%%%%%%%%%%%%%%%%%SINR = è¾“å‡ºçš„è¿œç«¯ä¿¡å·/å¹²æ‰°ä¿¡å·+å™ªå£°ï¼Œé‰´äºç›®å‰çš„å‰©ä½™è¿‘ç«¯ä¿¡å·ä¸º0ï¼Œä¹Ÿå°±æ˜¯è¯´
+            %%%%%%%%%%%%%%%%%%%%SINR = è¾“å‡ºçš„è¿œç«¯ä¿¡å·/å‰©ä½™çš„å™ªå£°ï¼ˆ= ä¼°è®¡å‡ºçš„è¿œç«¯ -å®é™…è¾“å‡ºçš„è¿œç«¯ï¼‰ï¼›é‰´äºå¯¹è¿œç«¯ä¿¡å·åŠŸç‡å·²çŸ¥çš„æƒ…å†µä¸‹
+            %%%%%%%%%%%%%%%%%%%%è¦è®©ä»–æ˜¯å¾ªç¯å¾—å‡ºçš„å€¼ï¼Œå¦åˆ™å°±åªèƒ½å¾—åˆ°æœ€åä¸€æ¬¡å¾ªç¯çš„å¾—åˆ°çš„å€¼
             
             
-            %Ô¶¶ËĞÅºÅµÄ¹À¼ÆºóµÄmse
+            %è¿œç«¯ä¿¡å·çš„ä¼°è®¡åçš„mse
             mean_Y_est = mean(Y_restraint_ehco);
             mean_tran_far = mean(transmit_signal);
             erro_est_far = mean_Y_est - mean_tran_far;
@@ -150,21 +150,21 @@ for Eb_No_dB = Eb_NoStart:Eb_NoInterval:Eb_NoEnd
             
            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%             %½á¹ûÖµÑ¹ÁË´óÔ¼40·Ö±´£¡!!!!!Ì«ÉÙÁË£¬Ó¦¸ÃÔÚ70dB,Ô­À´¹À¼Æ³öµÄYÈ·ÊµÊÇÑ¹ÁË70dB!!!!%%%%%%%%
+%             %ç»“æœå€¼å‹äº†å¤§çº¦40åˆ†è´ï¼!!!!!å¤ªå°‘äº†ï¼Œåº”è¯¥åœ¨70dB,åŸæ¥ä¼°è®¡å‡ºçš„Yç¡®å®æ˜¯å‹äº†70dB!!!!%%%%%%%%
 %             X_est_power = var(X_restraint_ehco_est);
 %             Y_est_power = var(Y_restraint_ehco);
-%             P_after_ehco = 10*log10(X_est_power./Y_est_power);  %½ü¶Ë±ÈÔ¶¶ËÁ½ÌõÌìÏßÉÏµÄ±ÈÔÚ-20.9£¬-20.6dB£»
+%             P_after_ehco = 10*log10(X_est_power./Y_est_power);  %è¿‘ç«¯æ¯”è¿œç«¯ä¸¤æ¡å¤©çº¿ä¸Šçš„æ¯”åœ¨-20.9ï¼Œ-20.6dBï¼›
             
-            % OFDM½âµ÷,È¥Ç°µ¼ĞòÁĞ
+            % OFDMè§£è°ƒ,å»å‰å¯¼åºåˆ—
             [data_sym] = ofdm_demod(Y_restraint_ehco,PrefixRatio,N_subc,N_sym,N_tran_sym,N_Rx_ant);
             [data_sym_near] = ofdm_demod(X_restraint_ehco_est,PrefixRatio,N_subc,N_sym,N_tran_sym,N_Rx_ant);
             
             
             %[data_sym] = ofdm_demod(recv_signal,PrefixRatio,N_subc,N_sym,N_tran_sym,N_Rx_ant);
             %[data_sym_another] = ofdm_demod(recv_signal_another ,PrefixRatio,N_subc,N_sym,N_tran_sym,N_Rx_ant);
-            %channel_est=1;%ÎŞĞÅµÀ¹À¼Æ£¬Í¬²½µÈ
+            %channel_est=1;%æ— ä¿¡é“ä¼°è®¡ï¼ŒåŒæ­¥ç­‰
             
-             %ZF¼ì²â ------ÔÚ¹À¼ÆÁË½ü¶ËĞÅºÅºó£¬ÔÚ½ÓÊÕµ½µÄĞÅºÅÖĞ¼õÈ¥£¬µÃµ½µÄµÚÒ»½×¶ÎµÄÔ¶¶ËĞÅºÅ¹À¼Æ£¬½øĞĞZF¼ì²â£¬µÃµ½¸ü¾«È·µÄÔ¶¶ËĞÅºÅ     
+             %ZFæ£€æµ‹ ------åœ¨ä¼°è®¡äº†è¿‘ç«¯ä¿¡å·åï¼Œåœ¨æ¥æ”¶åˆ°çš„ä¿¡å·ä¸­å‡å»ï¼Œå¾—åˆ°çš„ç¬¬ä¸€é˜¶æ®µçš„è¿œç«¯ä¿¡å·ä¼°è®¡ï¼Œè¿›è¡ŒZFæ£€æµ‹ï¼Œå¾—åˆ°æ›´ç²¾ç¡®çš„è¿œç«¯ä¿¡å·     
             I = eye(N_subc);
             data_sym_1 = data_sym(:,:,1);
             data_sym_2 = data_sym(:,:,2);
@@ -177,39 +177,39 @@ for Eb_No_dB = Eb_NoStart:Eb_NoInterval:Eb_NoEnd
            
            X_power = var(data_sym_near);
             Y_power = var(data_sym);
-            P_after = 10*log10(X_power./Y_power);  %½ü¶Ë±ÈÔ¶¶ËÁ½ÌõÌìÏßÉÏµÄ±ÈÔÚ0dB×óÓÒ£»
-            % ½ÓÊÕ»ú·Ö¼¯´¦ÀíºÍ¿ÕÊ±½âÂë  %%ÒòÎª´«ÊäµÄĞÅºÅÃ»ÓĞ³ÉÏàÓ¦µÄÒò×Ó£¬ËùÒÔ»¹ÊÇ°´ÕÕÀíÏëµÄÀ´×ö
+            P_after = 10*log10(X_power./Y_power);  %è¿‘ç«¯æ¯”è¿œç«¯ä¸¤æ¡å¤©çº¿ä¸Šçš„æ¯”åœ¨0dBå·¦å³ï¼›
+            % æ¥æ”¶æœºåˆ†é›†å¤„ç†å’Œç©ºæ—¶è§£ç   %%å› ä¸ºä¼ è¾“çš„ä¿¡å·æ²¡æœ‰æˆç›¸åº”çš„å› å­ï¼Œæ‰€ä»¥è¿˜æ˜¯æŒ‰ç…§ç†æƒ³çš„æ¥åš
             
-            channel_est=ones(N_subc,1,N_ant_pair);%¼ÙÉèÎªÀíÏëĞÅµÀ£¬ĞÅµÀ¹À¼ÆÎª¶Ô½ÇÏßÉÏÎª1µÄ¾ØÕó  %%%%%%%ÆµÓòµÄĞÅµÀ
+            channel_est=ones(N_subc,1,N_ant_pair);%å‡è®¾ä¸ºç†æƒ³ä¿¡é“ï¼Œä¿¡é“ä¼°è®¡ä¸ºå¯¹è§’çº¿ä¸Šä¸º1çš„çŸ©é˜µ  %%%%%%%é¢‘åŸŸçš„ä¿¡é“
               
 
            
-           %¿É¼ÓÒ»²¿Æ½»¬µôÔëÉùµÄ£¬±ÈÈçÈıµã»¬¶¯·¨£»x1 = [0 0 x];x2 = [0 x 0]; x3 = [x 0 0]
+           %å¯åŠ ä¸€éƒ¨å¹³æ»‘æ‰å™ªå£°çš„ï¼Œæ¯”å¦‚ä¸‰ç‚¹æ»‘åŠ¨æ³•ï¼›x1 = [0 0 x];x2 = [0 x 0]; x3 = [x 0 0]
            %y = 1/3 *(x1+x2+x3);
             
-            st_decoded = st_decoding( data_sym_est,channel_est,N_Tx_ant, N_Rx_ant ,ST_Code ,Idx_data);%2X2MIMO%%%%%%%%%data_sym(:,:,1)ÉÏ°üÀ¨Á½²¿·ÖµÄ£¬Ò»²¿·ÖÊÇÔ¶¶Ë½ÚµãÉÏµÄ£¬Ò»²¿·ÖÊÇ½ü¶Ë½ÚµãÉÏµÄ
+            st_decoded = st_decoding( data_sym_est,channel_est,N_Tx_ant, N_Rx_ant ,ST_Code ,Idx_data);%2X2MIMO%%%%%%%%%data_sym(:,:,1)ä¸ŠåŒ…æ‹¬ä¸¤éƒ¨åˆ†çš„ï¼Œä¸€éƒ¨åˆ†æ˜¯è¿œç«¯èŠ‚ç‚¹ä¸Šçš„ï¼Œä¸€éƒ¨åˆ†æ˜¯è¿‘ç«¯èŠ‚ç‚¹ä¸Šçš„
           
-            % ¸ù¾İÃ¿ÓÃ»§,Ã¿×ÓÔØ²¨µÄµ÷ÖÆ·½Ê½,½øĞĞ½âµ÷
+            % æ ¹æ®æ¯ç”¨æˆ·,æ¯å­è½½æ³¢çš„è°ƒåˆ¶æ–¹å¼,è¿›è¡Œè§£è°ƒ
             demod_user_bit = demodulator( st_decoded, user_subc_alloc{u} ,mod_subc{u} ,...
                 pad_bit_cnt(u),N_sym,TurnOn.AdptMod);   
-            decoded_user_bit{u}= demod_user_bit;%ÎŞ ĞÅµÀ½âÂë, °üÀ¨RS½âÂë, ¾í»ıÂëViterbi±àÂëµÈ
-            % ±¾Ö¡,±¾ĞÅÔë±ÈÏÂ,±¾ÓÃ»§µÄĞÔÄÜÍ³¼Æ
-            bit_err = sum(abs(decoded_user_bit{u} - user_bit{u}));%ÎóÂëÂÊ¼ÆËã
+            decoded_user_bit{u}= demod_user_bit;%æ—  ä¿¡é“è§£ç , åŒ…æ‹¬RSè§£ç , å·ç§¯ç Viterbiç¼–ç ç­‰
+            % æœ¬å¸§,æœ¬ä¿¡å™ªæ¯”ä¸‹,æœ¬ç”¨æˆ·çš„æ€§èƒ½ç»Ÿè®¡
+            bit_err = sum(abs(decoded_user_bit{u} - user_bit{u}));%è¯¯ç ç‡è®¡ç®—
             user_bit_err{u}(frame,snr_idx) = bit_err ;  
     
                 
-           %ĞÅµÀÈİÁ¿
-           C{u}(snr_idx) =  Bw * log2(1 + Eb_No);   %ÏãÅ©¶¨Àí£¬ÀíÏë
+           %ä¿¡é“å®¹é‡
+           C{u}(snr_idx) =  Bw * log2(1 + Eb_No);   %é¦™å†œå®šç†ï¼Œç†æƒ³
             
-        end  % ¶à¸öÓÃ»§½ÓÊÕ»úµÄÑ­»·½áÊø 
-        % ÊµÊ±ÏÔÊ¾·ÂÕæĞÔÄÜ
+        end  % å¤šä¸ªç”¨æˆ·æ¥æ”¶æœºçš„å¾ªç¯ç»“æŸ 
+        % å®æ—¶æ˜¾ç¤ºä»¿çœŸæ€§èƒ½
         fprintf('Eb/No:%d dB\tFrame No.:%d  Err Bits:%d \n',...
             Eb_No_dB, frame, bit_err);
-     end     % OFDMÖ¡/Êı¾İ°üÑ­»·½áÊø   
+     end     % OFDMå¸§/æ•°æ®åŒ…å¾ªç¯ç»“æŸ   
      snr_idx = snr_idx + 1;
    
-end      % Eb/NoĞÅÔë±ÈÑ­»·½áÊø  
-performance_eval;% »­Í¼
+end      % Eb/Noä¿¡å™ªæ¯”å¾ªç¯ç»“æŸ  
+performance_eval;% ç”»å›¾
 
 
                         

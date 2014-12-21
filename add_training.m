@@ -1,18 +1,18 @@
 function [transmit_signal, training] = add_training(transmit_signal,PrefixRatio,...
     N_subc,N_used, Idx_used,cp_len, N_Tx_ant,N_tran_sym)
 
-% 1024µãFFTµÄÇ°µ¼ĞòÁĞ
-% ¶àÌõÌìÏßµÄÑµÁ·ĞòÁĞ(Í¬²½Ö¡),¸÷Á½¸öOFDM·ûºÅ
+% 1024ç‚¹FFTçš„å‰å¯¼åºåˆ—
+% å¤šæ¡å¤©çº¿çš„è®­ç»ƒåºåˆ—(åŒæ­¥å¸§),å„ä¸¤ä¸ªOFDMç¬¦å·
 training = zeros(N_subc,N_tran_sym,N_Tx_ant);
-% ²úÉúÎ±Ëæ»úĞòÁĞ£¬·ÅÔÚÑµÁ·OFDM·ûºÅµÄµ¼ÆµÎ»ÖÃ.
+% äº§ç”Ÿä¼ªéšæœºåºåˆ—ï¼Œæ”¾åœ¨è®­ç»ƒOFDMç¬¦å·çš„å¯¼é¢‘ä½ç½®.
 PN_seq = mseq(10, [1 2 6 10], ones(1,10), N_Tx_ant*3);
 PN_seq = 2*PN_seq - 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ²úÉúµÚ1¸öÑµÁ·OFDM·ûºÅ
-Repeat = 8; % Îª±£Ö¤ÔÚÊ±ÓòÉÏÖØ¸´Repeat´Î, ÔÚÆµÓòÉÏÁ½¸öÓĞÊı¾İµÄ×ÓÔØ²¨¼ä²å(Repeat-1)¸öÁã
+% äº§ç”Ÿç¬¬1ä¸ªè®­ç»ƒOFDMç¬¦å·
+Repeat = 8; % ä¸ºä¿è¯åœ¨æ—¶åŸŸä¸Šé‡å¤Repeatæ¬¡, åœ¨é¢‘åŸŸä¸Šä¸¤ä¸ªæœ‰æ•°æ®çš„å­è½½æ³¢é—´æ’(Repeat-1)ä¸ªé›¶
 for ant = 1:N_Tx_ant
-    real_part = PN_seq( (ant-1)*N_Tx_ant + 1,1:N_used/Repeat ); % ½ØÈ¡PNĞòÁĞ
+    real_part = PN_seq( (ant-1)*N_Tx_ant + 1,1:N_used/Repeat ); % æˆªå–PNåºåˆ—
     imag_part = PN_seq( (ant-1)*N_Tx_ant + 2,1:N_used/Repeat );
     
     tran_tmp1 =  sqrt(Repeat/2) * ( real_part + j * imag_part );
@@ -23,11 +23,11 @@ for ant = 1:N_Tx_ant
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ²úÉúµÚ2¸öÑµÁ·OFDM·ûºÅ, ÔÚÅ¼ÊıµÄ×ÓÔØ²¨ÉÏ·ÅÎ±Ëæ»úĞòÁĞ
+% äº§ç”Ÿç¬¬2ä¸ªè®­ç»ƒOFDMç¬¦å·, åœ¨å¶æ•°çš„å­è½½æ³¢ä¸Šæ”¾ä¼ªéšæœºåºåˆ—
 
 Repeat = 2;
 for ant = 1:N_Tx_ant
-    tran_tmp1 = PN_seq( 2*N_Tx_ant + ant,1:N_used/Repeat ); % ½ØÈ¡PNĞòÁĞ    
+    tran_tmp1 = PN_seq( 2*N_Tx_ant + ant,1:N_used/Repeat ); % æˆªå–PNåºåˆ—    
     tmp1 = [ tran_tmp1 ; zeros(Repeat-1,N_used/Repeat) ];
     tmp2 = reshape(tmp1, N_used, 1);
     tmp3 = [ tmp2(1:N_used/2) ; flipud(tmp2(N_used/2 + 1:end))];
@@ -36,7 +36,7 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ²úÉúÊ±ÓòÑµÁ·ĞòÁĞ
+% äº§ç”Ÿæ—¶åŸŸè®­ç»ƒåºåˆ—
 
 syn_frame = sqrt(N_subc) * ifft( fftshift( training , 1 ) );
 cp = syn_frame(N_subc - cp_len + 1:N_subc ,:,:);

@@ -1,12 +1,12 @@
 function noise=gausnoise(Eb_No_dB,transmit_signal_power,length_noise)
-%¸ù¾İĞÅÔë±È²úÉú¸ßË¹°×ÔëÉùĞòÁĞ
-            linear_Eb_No_dB=10^(Eb_No_dB/10);%ÏßĞÔĞÅÔë±È 
+%æ ¹æ®ä¿¡å™ªæ¯”äº§ç”Ÿé«˜æ–¯ç™½å™ªå£°åºåˆ—
+            linear_Eb_No_dB=10^(Eb_No_dB/10);%çº¿æ€§ä¿¡å™ªæ¯” 
             noise_sigma=transmit_signal_power/linear_Eb_No_dB;
-            noise_scale_factor = sqrt(noise_sigma/2);%±ê×¼²îsigma
-            realnoise=randn(1,length_noise,2);%²úÉúÕıÌ¬·Ö²¼ÔëÉùĞòÁĞÊµ²¿
+            noise_scale_factor = sqrt(noise_sigma/2);%æ ‡å‡†å·®sigma
+            realnoise=randn(1,length_noise,2);%äº§ç”Ÿæ­£æ€åˆ†å¸ƒå™ªå£°åºåˆ—å®éƒ¨
             realnoise(:,:,1)=realnoise(:,:,1).*noise_scale_factor(1);
             realnoise(:,:,2)=realnoise(:,:,2).*noise_scale_factor(2);
-            imagnoise=randn(1,length_noise,2);%²úÉúÕıÌ¬·Ö²¼ÔëÉùĞòÁĞĞé²½
+            imagnoise=randn(1,length_noise,2);%äº§ç”Ÿæ­£æ€åˆ†å¸ƒå™ªå£°åºåˆ—è™šæ­¥
             imagnoise(:,:,1)=imagnoise(:,:,1).*noise_scale_factor(1);
             imagnoise(:,:,2)=imagnoise(:,:,2).*noise_scale_factor(2);
-            noise=complex(realnoise,imagnoise);%¸´ÔëÉùĞòÁĞ
+            noise=complex(realnoise,imagnoise);%å¤å™ªå£°åºåˆ—

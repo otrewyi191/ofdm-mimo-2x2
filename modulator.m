@@ -5,11 +5,11 @@ function mod_sym =  modulator(coded_user_bit,user_subc_alloc,mod_subc,...
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ¹¦ÄÜ: Èç¹ûÓÐ×ÔÊÊÓ¦µ÷ÖÆ,½øÐÐÖðÓÃ»§,ÖðOFDM·ûºÅ,Öð×ÓÔØ²¨µÄÐÇ×ùµ÷ÖÆ
-%       ´Ë²½Öè±È½Ï·ÑÊ±, µ«ÊÇÒòÎª¸÷¸ö×ÓÔØ²¨µ÷ÖÆ·½Ê½²»Í¬ , ÎÞ·¨Ê¹ÓÃÏòÁ¿½øÐÐµ÷ÖÆ 
-%       ¶øÈç¹ûÃ»ÓÐ×ÔÊÊÓ¦µ÷ÖÆ,Ôò½øÐÐÖðÓÃ»§,ÖðOFDM·ûºÅµÄÐÇ×ùµ÷ÖÆ
-%       Ê¹ÓÃÏòÁ¿½øÐÐµ÷ÖÆ,ËÙ¶È½Ï¿ì
-% ÊäÈë: 
+% åŠŸèƒ½: å¦‚æžœæœ‰è‡ªé€‚åº”è°ƒåˆ¶,è¿›è¡Œé€ç”¨æˆ·,é€OFDMç¬¦å·,é€å­è½½æ³¢çš„æ˜Ÿåº§è°ƒåˆ¶
+%       æ­¤æ­¥éª¤æ¯”è¾ƒè´¹æ—¶, ä½†æ˜¯å› ä¸ºå„ä¸ªå­è½½æ³¢è°ƒåˆ¶æ–¹å¼ä¸åŒ , æ— æ³•ä½¿ç”¨å‘é‡è¿›è¡Œè°ƒåˆ¶ 
+%       è€Œå¦‚æžœæ²¡æœ‰è‡ªé€‚åº”è°ƒåˆ¶,åˆ™è¿›è¡Œé€ç”¨æˆ·,é€OFDMç¬¦å·çš„æ˜Ÿåº§è°ƒåˆ¶
+%       ä½¿ç”¨å‘é‡è¿›è¡Œè°ƒåˆ¶,é€Ÿåº¦è¾ƒå¿«
+% è¾“å…¥: 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17,51 +17,51 @@ function mod_sym =  modulator(coded_user_bit,user_subc_alloc,mod_subc,...
 mod_sym = zeros(N_subc,N_sym);
 N_user = length(coded_user_bit);
 for u = 1:N_user
-    % ¹¦ÂÊ¹éÒ»»¯
+    % åŠŸçŽ‡å½’ä¸€åŒ–
     pwr_subc{u} = pwr_subc{u}./( sum(pwr_subc{u}) / length(pwr_subc{u}) );
-    % ÓÃ»§ÊäÈëÊý¾ÝµÄÖ¸Õë
+    % ç”¨æˆ·è¾“å…¥æ•°æ®çš„æŒ‡é’ˆ
     pointer = 1;   
-    % ÏÈ°´ÕÕpad_bit_cnt, ÔÚÃ¿¸öÓÃ»§µÄÊý¾Ý±ÈÌØÐòÁÐºó²¹Áã
+    % å…ˆæŒ‰ç…§pad_bit_cnt, åœ¨æ¯ä¸ªç”¨æˆ·çš„æ•°æ®æ¯”ç‰¹åºåˆ—åŽè¡¥é›¶
     coded_user_bit{u} = [ coded_user_bit{u} ;zeros(pad_bit_cnt(u),1)];
-    % È»ºó½¨Á¢OFDM·ûºÅµÄÑ­»·, ÒÔ¼°±¾·ûºÅÄÚÓÃ»§×ÓÔØ²¨µÄÑ­»·
+    % ç„¶åŽå»ºç«‹OFDMç¬¦å·çš„å¾ªçŽ¯, ä»¥åŠæœ¬ç¬¦å·å†…ç”¨æˆ·å­è½½æ³¢çš„å¾ªçŽ¯
     for n = 1:N_sym
         
-        %ÓÐ×ÔÊÊÓ¦µ÷ÖÆ
+        %æœ‰è‡ªé€‚åº”è°ƒåˆ¶
         if AdptMod == 1
             for k = 1:length(user_subc_alloc{u})
-                % µÚu¸öÓÃ»§,µÚn¸öOFDM·ûºÅ,µÚk¸ö×ÓÔØ²¨ÐòºÅ
+                % ç¬¬uä¸ªç”¨æˆ·,ç¬¬nä¸ªOFDMç¬¦å·,ç¬¬kä¸ªå­è½½æ³¢åºå·
                 subc_k = user_subc_alloc{u}(k);
-                % ¶ÔÓ¦µÄµ÷ÖÆ·½Ê½
+                % å¯¹åº”çš„è°ƒåˆ¶æ–¹å¼
                 bit_k = mod_subc{u}(k);
                 if bit_k ~= 0
-                    % ¶ÔÓ¦µÄ¹¦ÂÊ
+                    % å¯¹åº”çš„åŠŸçŽ‡
                     pwr_k = pwr_subc{u}(k);
-                    % È¡³öÓÃÓÚµ÷ÖÆµÄ±ÈÌØ
+                    % å–å‡ºç”¨äºŽè°ƒåˆ¶çš„æ¯”ç‰¹
                     bit_to_mod = coded_user_bit{u}( pointer : pointer + bit_k -1);
                     pointer = pointer + bit_k;
-                    % ´Ëº¯Êý¿ÉÒÔ¸ù¾ÝÊäÈëµÄ±ÈÌØÐòÁÐ³¤¶È,½øÐÐµ÷ÖÆ
+                    % æ­¤å‡½æ•°å¯ä»¥æ ¹æ®è¾“å…¥çš„æ¯”ç‰¹åºåˆ—é•¿åº¦,è¿›è¡Œè°ƒåˆ¶
                     sym = modu_sym(bit_to_mod);
                     
-                    % ²»ÄÜ³ËÏàÓ¦µÄ¹¦ÂÊÒò×Ó! ÒòÎªÈç¹ûÊÇQAMµ÷ÖÆ,³Ë¹¦ÂÊÒò×Ó±ä»¯ÁË
-                    % ·ù¶È, ¾ÍÓÐ¿ÉÄÜÅÐ´í!!!!            
-                    % mod_sym(subc_k, n) = sym * pwr_k; % ´íÎó!!
-                    mod_sym(subc_k, n) = sym ;          % ÕýÈ·
+                    % ä¸èƒ½ä¹˜ç›¸åº”çš„åŠŸçŽ‡å› å­! å› ä¸ºå¦‚æžœæ˜¯QAMè°ƒåˆ¶,ä¹˜åŠŸçŽ‡å› å­å˜åŒ–äº†
+                    % å¹…åº¦, å°±æœ‰å¯èƒ½åˆ¤é”™!!!!            
+                    % mod_sym(subc_k, n) = sym * pwr_k; % é”™è¯¯!!
+                    mod_sym(subc_k, n) = sym ;          % æ­£ç¡®
                 else
                     mod_sym(subc_k, n) = 0;
                 end
             end
-        %Ã»ÓÐ×ÔÊÊÓ¦µ÷ÖÆ    
+        %æ²¡æœ‰è‡ªé€‚åº”è°ƒåˆ¶    
         else
-            % µ±Ç°ÓÃ»§,µ±Ç°OFDM·ûºÅ,ËùÓÐ×ÓÔØ²¨µÄ±ÈÌØÊý(µ÷ÖÆ·½Ê½ÏàÍ¬)
-            mod_type = mod_subc{u}(1);%µ÷ÖÆ·½Ê½
-            tmp = length(user_subc_alloc{u})*mod_type;%Ã¿¸öÓÃ»§·Öµ½µÄ×ÓÔØ²¨Êý*µ÷ÖÆ½øÖÆÊý£¬¼´Ò»¸öOFDM·ûºÅ°üº¬µÄ±ÈÌØÊý
-            % È¡³öÓÃÓÚµ÷ÖÆµÄ±ÈÌØ, ²¢±ä»»Îªmodu_symÈÏ¿ÉµÄÊäÈëÐÎÊ½
+            % å½“å‰ç”¨æˆ·,å½“å‰OFDMç¬¦å·,æ‰€æœ‰å­è½½æ³¢çš„æ¯”ç‰¹æ•°(è°ƒåˆ¶æ–¹å¼ç›¸åŒ)
+            mod_type = mod_subc{u}(1);%è°ƒåˆ¶æ–¹å¼
+            tmp = length(user_subc_alloc{u})*mod_type;%æ¯ä¸ªç”¨æˆ·åˆ†åˆ°çš„å­è½½æ³¢æ•°*è°ƒåˆ¶è¿›åˆ¶æ•°ï¼Œå³ä¸€ä¸ªOFDMç¬¦å·åŒ…å«çš„æ¯”ç‰¹æ•°
+            % å–å‡ºç”¨äºŽè°ƒåˆ¶çš„æ¯”ç‰¹, å¹¶å˜æ¢ä¸ºmodu_symè®¤å¯çš„è¾“å…¥å½¢å¼
             tmp_bit = coded_user_bit{u}(pointer : pointer + tmp - 1);
             pointer = pointer + tmp;
             bit_to_mod = reshape(tmp_bit, mod_type , tmp/mod_type);
             sym = modu_sym (bit_to_mod);
-            % ³ËÉÏÏàÓ¦µÄ¹¦ÂÊÒò×Ó, °Ñ·ûºÅ·Åµ½¶ÔÓ¦µÄ×ÓÔØ²¨ÉÏ
-            mod_sym(user_subc_alloc{u}, n) = sym.' .* pwr_subc{u};%°´ÁÐ½øÐÐÊý¾ÝµÄÐ´Èë£¬Ã¿Ò»ÁÐÎªÒ»¸öOFDM·ûºÅ
+            % ä¹˜ä¸Šç›¸åº”çš„åŠŸçŽ‡å› å­, æŠŠç¬¦å·æ”¾åˆ°å¯¹åº”çš„å­è½½æ³¢ä¸Š
+            mod_sym(user_subc_alloc{u}, n) = sym.' .* pwr_subc{u};%æŒ‰åˆ—è¿›è¡Œæ•°æ®çš„å†™å…¥ï¼Œæ¯ä¸€åˆ—ä¸ºä¸€ä¸ªOFDMç¬¦å·
         end
     end
     

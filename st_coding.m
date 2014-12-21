@@ -1,7 +1,7 @@
 function st_coded = st_coding( mod_sym,N_Tx_ant,ST_Code)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ·¢ËÍ·Ö¼¯ , 2·¢»ò4·¢
+% å‘é€åˆ†é›† , 2å‘æˆ–4å‘
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -9,40 +9,40 @@ function st_coded = st_coding( mod_sym,N_Tx_ant,ST_Code)
 [N_subc,N_sym] = size(mod_sym);
 
 
-% Èç¹ûÓĞ·¢ËÍ·Ö¼¯
+% å¦‚æœæœ‰å‘é€åˆ†é›†
 if N_Tx_ant ~= 1
-% Ê¹ÓÃ¿ÕÊ±·Ö×éÂë
+% ä½¿ç”¨ç©ºæ—¶åˆ†ç»„ç 
      if ST_Code == 1
          st_coded = zeros(N_subc,N_sym, N_Tx_ant);
          if (mod(N_sym,N_Tx_ant))
-             error('¿ÕÊ±±àÂëÆ÷ÊäÈë·ûºÅ²»Æ¥Åä,×Ó³ÌĞòst_coding³ö´í');
+             error('ç©ºæ—¶ç¼–ç å™¨è¾“å…¥ç¬¦å·ä¸åŒ¹é…,å­ç¨‹åºst_codingå‡ºé”™');
          else
              for n = 1:N_sym/N_Tx_ant    
-                 % Ò»´ÎËÍÈë¿ÕÊ±±àÂëÆ÷µÄOFDM·ûºÅÓĞN_Tx_ant¸ö£¬Èç·¢ËÍÌìÏßÎª2£¬ÔòÒ»´ÎËÍÈëÁ½¸öOFDM·ûºÅ½øĞĞAlamouti±àÂë
+                 % ä¸€æ¬¡é€å…¥ç©ºæ—¶ç¼–ç å™¨çš„OFDMç¬¦å·æœ‰N_Tx_antä¸ªï¼Œå¦‚å‘é€å¤©çº¿ä¸º2ï¼Œåˆ™ä¸€æ¬¡é€å…¥ä¸¤ä¸ªOFDMç¬¦å·è¿›è¡ŒAlamoutiç¼–ç 
                  coded_tmp = stbc_code_TX( mod_sym( :,(n-1)*N_Tx_ant+1 : n*N_Tx_ant ) );
-                 % coded_tmpµÄ½á¹¹: Ã¿ÁĞ´ú±íÒ»ÌõÌìÏß·¢³öµÄÊı¾İ,ÓĞN_Tx_ant*N_subc
-                % ¸öÑùµã, ¶øÒ»¹²ÓĞN_Tx_antÁĞ,´ú±í²»Í¬ÌìÏßµÄÊı¾İ
+                 % coded_tmpçš„ç»“æ„: æ¯åˆ—ä»£è¡¨ä¸€æ¡å¤©çº¿å‘å‡ºçš„æ•°æ®,æœ‰N_Tx_ant*N_subc
+                % ä¸ªæ ·ç‚¹, è€Œä¸€å…±æœ‰N_Tx_antåˆ—,ä»£è¡¨ä¸åŒå¤©çº¿çš„æ•°æ®
                 
-                % ×ª»¯Îª½á¹¹:ÓĞ N_subcĞĞ, ´ú±í²»Í¬Ê±¼äOFDM·ûºÅµÄN_Tx_antÁĞ, 
-                % ¾ØÕóµÚÈıÎ¬ÎªN_Tx_ant¸ö,´ú±í²»Í¬ÌìÏßµÄÊı¾İ
+                % è½¬åŒ–ä¸ºç»“æ„:æœ‰ N_subcè¡Œ, ä»£è¡¨ä¸åŒæ—¶é—´OFDMç¬¦å·çš„N_Tx_antåˆ—, 
+                % çŸ©é˜µç¬¬ä¸‰ç»´ä¸ºN_Tx_antä¸ª,ä»£è¡¨ä¸åŒå¤©çº¿çš„æ•°æ®
                  for ant = 1:N_Tx_ant
-                      tmp = reshape(coded_tmp(:,ant), N_subc, N_Tx_ant);%µÚÒ»¸ùÌìÏß·¢ËÍµÄÇ°Á½¸ö·ûºÅÎª[Xe,-conj(Xo)]
-                      % °Ñµ÷ÕûºóµÄ·ûºÅ¿é,·ÅÔÚÊä³ö·ûºÅµÄÏàÓ¦Î»ÖÃ
-                      st_coded(:, (n-1)*N_Tx_ant+1:n*N_Tx_ant ,ant) = tmp;%ÀûÓÃµÚÈıÎ¬±íÊ¾²»Í¬ÌìÏß·¢ËÍµÄOFDM·ûºÅ
+                      tmp = reshape(coded_tmp(:,ant), N_subc, N_Tx_ant);%ç¬¬ä¸€æ ¹å¤©çº¿å‘é€çš„å‰ä¸¤ä¸ªç¬¦å·ä¸º[Xe,-conj(Xo)]
+                      % æŠŠè°ƒæ•´åçš„ç¬¦å·å—,æ”¾åœ¨è¾“å‡ºç¬¦å·çš„ç›¸åº”ä½ç½®
+                      st_coded(:, (n-1)*N_Tx_ant+1:n*N_Tx_ant ,ant) = tmp;%åˆ©ç”¨ç¬¬ä¸‰ç»´è¡¨ç¤ºä¸åŒå¤©çº¿å‘é€çš„OFDMç¬¦å·
                  end
              end
          end
      end
  
-     % Ê¹ÓÃ¿ÕÊ±¸ñÂë
+     % ä½¿ç”¨ç©ºæ—¶æ ¼ç 
      elseif ST_Code == 2
          
-         %²»Ê¹ÓÃÈÎºÎ±àÂë
+         %ä¸ä½¿ç”¨ä»»ä½•ç¼–ç 
          elseif ST_Code == 0
              for n = 1:N_sym/N_Tx_ant   
                   coded_tmp = stbc_uncode_TX( mod_sym( :,(n-1)*N_Tx_ant+1 : n*N_Tx_ant ) );
                   for ant = 1:N_Tx_ant
-                      tmp = reshape(coded_tmp(:,ant), N_subc, N_Tx_ant);%µÚÒ»¸ùÌìÏß·¢ËÍµÄÇ°Á½¸ö·ûºÅÎª[Xe,-conj(Xo)]
+                      tmp = reshape(coded_tmp(:,ant), N_subc, N_Tx_ant);%ç¬¬ä¸€æ ¹å¤©çº¿å‘é€çš„å‰ä¸¤ä¸ªç¬¦å·ä¸º[Xe,-conj(Xo)]
                       st_coded(:, (n-1)*N_Tx_ant+1:n*N_Tx_ant ,ant) = tmp;
                   end
              end
@@ -51,7 +51,7 @@ if N_Tx_ant ~= 1
 
      
 
-% Èç¹ûÃ»ÓĞ·¢ËÍ·Ö¼¯,²¢²»ÊÇÖ¸¶àÌìÏßµÄÎ´STBC£¡£¡£¡£¡
+% å¦‚æœæ²¡æœ‰å‘é€åˆ†é›†,å¹¶ä¸æ˜¯æŒ‡å¤šå¤©çº¿çš„æœªSTBCï¼ï¼ï¼ï¼
 else
     st_coded = mod_sym;
 end

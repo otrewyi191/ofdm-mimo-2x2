@@ -2,33 +2,33 @@
 
 function bit_out = demodu_sym(sym,mod_type)
 
-% sym, ĞĞÏòÁ¿
-% bit, mod_typeĞĞµÄ¾ØÕó, length(sym)ÁĞµÄ¾ØÕó
-% ´óÓÚ0, Ó²ÅĞ¾öÎª±ÈÌØ1 ; Ğ¡ÓÚ0 ,Ó²ÅĞ¾öÎª±ÈÌØ0
+% sym, è¡Œå‘é‡
+% bit, mod_typeè¡Œçš„çŸ©é˜µ, length(sym)åˆ—çš„çŸ©é˜µ
+% å¤§äº0, ç¡¬åˆ¤å†³ä¸ºæ¯”ç‰¹1 ; å°äº0 ,ç¡¬åˆ¤å†³ä¸ºæ¯”ç‰¹0
 
 bit_out = zeros(mod_type ,size(sym,2));
 
 switch mod_type
     
-    % BPSK½âµ÷
+    % BPSKè§£è°ƒ
     case    1 
         bit_out = real(sym) > 0; 
         
-    % QPSK½âµ÷
+    % QPSKè§£è°ƒ
     case    2
-        % ÓÉQPSKµÄĞÇ×ùÍ¼¿ÉÒÔ¹Û²ìµ½
+        % ç”±QPSKçš„æ˜Ÿåº§å›¾å¯ä»¥è§‚å¯Ÿåˆ°
         bit0 = real(sym) ; 
         bit1 = imag(sym) ;
         
-        % µÃµ½2ĞĞ, ÁĞÊıÎª·ûºÅÊıµÄÊä³ö¾ØÕó
+        % å¾—åˆ°2è¡Œ, åˆ—æ•°ä¸ºç¬¦å·æ•°çš„è¾“å‡ºçŸ©é˜µ
         bit_out(1,:) = bit0 > 0;
         bit_out(2,:) = bit1 > 0;
         
-    % 8PSK½âµ÷  
+    % 8PSKè§£è°ƒ  
     case    3
-        % ²Î¼û8PSKµÄĞÇ×ùÍ¼
+        % å‚è§8PSKçš„æ˜Ÿåº§å›¾
         bit0 = -imag( sym * exp(j*pi/8)) ;
-        % bit1ºÍbit2½âµ÷,¶¼ĞèÒª½øĞĞĞÇ×ùĞı×ª
+        % bit1å’Œbit2è§£è°ƒ,éƒ½éœ€è¦è¿›è¡Œæ˜Ÿåº§æ—‹è½¬
         bit1 = -real(sym * exp(j*pi/8)) ;
         
         bit2 = [];
@@ -43,16 +43,16 @@ switch mod_type
         
         bit_out(1,:) = bit0 >0;
         bit_out(2,:) = bit1 >0;
-        bit_out(3,:) = bit2 ;    %¡¡ÒÑ¾­Ó²ÅĞ¾ö
+        bit_out(3,:) = bit2 ;    %ã€€å·²ç»ç¡¬åˆ¤å†³
             
-    % 16QAM½âµ÷   
+    % 16QAMè§£è°ƒ   
     case    4
         
         bit0 = real(sym);
         bit2 = imag(sym);
 
-        % ÒÔbit1µÄÉú³ÉÀ´ËµÃ÷·½·¨:
-        % 2/sqrt(10) ÎªÁÙ½çÖµ, abs(real(sym))´óÓÚ´Ë, Ôòbit1Îª¸º,Ó²ÅĞ¾öµÃµ½0 ; ·´Ö®ÎªÕı
+        % ä»¥bit1çš„ç”Ÿæˆæ¥è¯´æ˜æ–¹æ³•:
+        % 2/sqrt(10) ä¸ºä¸´ç•Œå€¼, abs(real(sym))å¤§äºæ­¤, åˆ™bit1ä¸ºè´Ÿ,ç¡¬åˆ¤å†³å¾—åˆ°0 ; åä¹‹ä¸ºæ­£
         bit1 = 2/sqrt(10)-(abs(real(sym)));
         bit3 = 2/sqrt(10)-(abs(imag(sym)));
 
@@ -61,7 +61,7 @@ switch mod_type
         bit_out(3,:) = bit2 > 0;
         bit_out(4,:) = bit3 > 0;
         
-    % 64QAM½âµ÷         
+    % 64QAMè§£è°ƒ         
     case    6       
         bit0 = real(sym);
         bit3 = imag(sym);
@@ -95,7 +95,7 @@ switch mod_type
         bit_out(6,:) = bit5 > 0;
         
     otherwise
-        error('µ÷ÖÆ·½Ê½ÓĞÎó! ×Ó³ÌĞòdemod_sym³ö´í'); 
+        error('è°ƒåˆ¶æ–¹å¼æœ‰è¯¯! å­ç¨‹åºdemod_symå‡ºé”™'); 
 end
 
 
